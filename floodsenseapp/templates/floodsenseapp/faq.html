@@ -1,0 +1,16 @@
+{% extends 'floodsenseapp/base.html' %}
+{% block title %}FAQs{% endblock %}
+{% block content %}
+
+<div class="px-10 pb-10">
+    <h2 class="text-2xl font-bold mb-5">Frequently Asked Questions</h2>
+
+    {% for record in faq_records %}
+    <div class="p-4 mb-4 border rounded-md shadow-md bg-gray-100">
+        <p><strong>Q{{ record.faq_id }}:</strong> {{ record.Question }}</p>
+        <p><strong>Answer:</strong> {{ record.Answer }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

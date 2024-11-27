@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% load static %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloodSense . Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-yellow-700 text-white">
+    <div class="text-center">
+
+        <img class="p-2 mb-10 mx-auto rounded-md shadow shadow-2xl shadow-white h-32" 
+          src="{% static 'floodsenseapp/floodLogo.png' %}" alt="Flood Sense Logo">
+
+
+        <h1 class="text-3xl font-bold mb-4">Welcome to FloodSense!</h1>
+        <p class="text-lg">...</p>
+    </div>
+</body>
+<script>
+    setTimeout(() => {
+        window.location.href = "/user_login";
+    }, 5000);
+</script>
+</html>

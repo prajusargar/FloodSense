@@ -1,0 +1,64 @@
+{% extends 'floodsenseapp/base.html' %} {% block title %}ChatBot . FloodSense{% endblock %}
+<div>{% block content %} {% load static %}</div>
+
+
+
+<!-- content -->
+<div class="" id="messages">
+    
+
+
+    <!-- Chat UI -->
+    <div class="flex flex-col h-screen">
+
+        <!-- Header -->
+        <header class="text-indigo-800 text-center py-4 text-xl font-bold shadow-md">
+            FloodSense Chat Bot Application
+        </header>
+
+        <!-- Messages Section -->
+        <div class="flex-grow overflow-y-auto p-4 space-y-4 pb-20">
+            {% for chat in chats %}
+            <div class="{% if chat.role == 'bot' %}flex {% else %}flex justify-end{% endif %} items-start space-x-4">
+                <div class="{% if chat.role == 'bot' %}bg-gray-200 text-gray-800{% else %}bg-blue-500 text-white{% endif %} p-3 rounded-lg shadow">
+                    <p class="text-sm">{{ chat.ChatText }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Input Bar -->
+        <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 flex items-center space-x-4">
+            <form method="POST" action="{% url 'chatbot' %}" class="w-full flex items-center space-x-4">
+                {% csrf_token %}
+                <input 
+                    type="text" 
+                    name="chatText" 
+                    placeholder="Type a message..." 
+                    class="flex-grow border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring focus:ring-blue-400"
+                    required
+                >
+                <button 
+                    type="submit" 
+                    class="bg-blue-600 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-700 transition duration-200"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- JavaScript to scroll to the bottom -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const messagesDiv = document.getElementById('messages');
+            if (messagesDiv) {
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }
+        });
+    </script>
+
+    
+</div>
+{% endblock %}

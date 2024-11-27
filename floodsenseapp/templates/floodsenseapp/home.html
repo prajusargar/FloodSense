@@ -1,0 +1,74 @@
+{% extends 'floodsenseapp/base.html' %}
+{% block title %}ChatBot . FloodSense{% endblock %}
+
+<div>{% block content %} {% load static %}</div>
+
+<!-- content -->
+<div class="px-10 pb-10">
+
+    <div class="grid grid-cols-3 gap-4">
+
+        <!-- Map Section -->
+        <div id="map" class="w-full p-2 rounded-md shadow-md border h-full">
+            {{ map_html|safe }}
+        </div>
+        
+        <!-- Dashboard -->
+        <div class="mt-5 col-span-2">
+                <label for="location" class="block text-gray-700 font-bold mb-2">Select Location:</label>
+                <select id="location" class="border rounded-lg w-full p-2">
+                <option value="" disabled selected>Select a location</option>
+                <option value="dadar">Dadar</option>
+                <option value="andheri">Andheri</option>
+                <option value="virar">Virar</option>
+                <!-- Add more locations as needed -->
+            </select>
+            
+            <button id="getData" class="mt-3 bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">
+                Get Data
+            </button>
+            
+            <div id="result" class="mt-5 p-4 border rounded-md shadow-md">
+                <p class="text-gray-700">Location data will appear here...</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.getElementById("getData").addEventListener("click", function () {
+        const location = document.getElementById("location").value;
+        if (!location) {
+            alert("Please select a location.");
+            return;
+        }
+
+        fetch("{% url 'get_location_data' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: new URLSearchParams({ location: location })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const resultDiv = document.getElementById("result");
+            if (data.error) {
+                resultDiv.innerHTML = `<p class="text-red-500">${data.error}</p>`;
+            } else {
+                resultDiv.innerHTML = `
+                    <p><strong>Flood Risk:</strong> ${data.flood_risk}</p>
+                    <p><strong>Rainfall (mm):</strong> ${data.rainfall_mm}</p>
+                `;
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            document.getElementById("result").innerHTML = "<p class='text-red-500'>Error fetching data. Please try again.</p>";
+        });
+    });
+</script>
+
+{% endblock %}
